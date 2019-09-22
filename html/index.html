@@ -1,0 +1,40 @@
+<head></head>
+<script src='mj.js'></script>
+<script>
+var stripctl = new mj("/ctl/strip");
+var noctl = false;
+function update_req() {
+    if(noctl || stripctl.queue.length>3) return;
+    stripctl.binrq(function(newdata){
+        let d= new DataView(newdata)
+        noctl = true;
+        mj.applyJSON([d.getUint16(0,true), d.getUint16(2,true), 1-d.getUint16(4,true)]);
+        noctl = false;
+    });
+}
+function send(x) {
+    if(noctl || stripctl.queue.length>3) return;
+    let buf= new ArrayBuffer(10);
+    let dv= new DataView(buf);
+    dv.setUint16(0, document.querySelector('[data-name=_0]').valueAsNumber, true);
+    dv.setUint16(2, document.querySelector('[data-name=_1]').valueAsNumber, true);
+    dv.setUint16(4, document.querySelector('[data-name=_2]').checked? 0:1, true);
+    dv.setUint16(6, document.querySelector('[data-name=_0]').valueAsNumber, true);
+    dv.setUint16(8, document.querySelector('[data-name=_1]').valueAsNumber, true);
+    x.setAttribute('data-no-update', '');
+    stripctl.binrq(function(newdata){
+        let d= new DataView(newdata)
+        noctl = true;
+        mj.applyJSON([d.getUint16(0,true), d.getUint16(2,true), 1-d.getUint16(4,true)]);
+        noctl = false;
+        x.removeAttribute('data-no-update');
+    }, function(newdata){
+        x.removeAttribute('data-no-update');
+    }, "POST", buf);
+}
+</script>
+<body onload='update_req()'>
+v:<input type='range' min=0 max=1024 data-name=_0 oninput='send(this)'><br>
+s:<input type='range' min=0 max=1024 data-name=_1 oninput='send(this)'><br>
+flicker:<input type='checkbox' data-name=_2 oninput='send(this)'>
+</body>
