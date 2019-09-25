@@ -16,12 +16,15 @@
 #define STRIP_PIN 14 // GPIO14
 #define LEDS 150
 
+unsigned short strip_drv_delay = configTICK_RATE_HZ/25;
+
 Ws2811 strip(STRIP_PIN);
 extern "C" void strip_drv(void *pvParameters)
 {
     strip.zone.emplace_back( std::make_shared<PlazmaZone>(0, LEDS) );
+    strip.zone.emplace_back( std::make_shared<Ws2811::Zone>(LEDS, LEDS) );
     for (;;) {
-        vTaskDelay(configTICK_RATE_HZ/25);
+        vTaskDelay(strip_drv_delay);
         strip.send_strip();
     }
 }

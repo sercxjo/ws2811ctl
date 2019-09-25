@@ -95,4 +95,5 @@ struct PlazmaZone: Ws2811::Zone {
 };
 
 extern Ws2811 strip; //< strip be defined in application
+extern unsigned short strip_drv_delay;
 #endif

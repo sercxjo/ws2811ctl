@@ -8,24 +8,27 @@ function update_req() {
     stripctl.binrq(function(newdata){
         let d= new DataView(newdata)
         noctl = true;
-        mj.applyJSON([d.getUint16(0,true), d.getUint16(2,true), 1-d.getUint16(4,true)]);
+        mj.applyJSON([1-d.getUint16(0,true), d.getUint16(2,true), d.getUint16(4,true), d.getUint16(6,true), d.getUint16(8,true), d.getUint16(10,true)]);
         noctl = false;
     });
 }
 function send(x) {
     if(noctl || stripctl.queue.length>3) return;
-    let buf= new ArrayBuffer(10);
+    let buf= new ArrayBuffer(16);
     let dv= new DataView(buf);
-    dv.setUint16(0, document.querySelector('[data-name=_0]').valueAsNumber, true);
+    dv.setUint16(0, document.querySelector('[data-name=_0]').checked? 0:1, true);
     dv.setUint16(2, document.querySelector('[data-name=_1]').valueAsNumber, true);
-    dv.setUint16(4, document.querySelector('[data-name=_2]').checked? 0:1, true);
-    dv.setUint16(6, document.querySelector('[data-name=_0]').valueAsNumber, true);
-    dv.setUint16(8, document.querySelector('[data-name=_1]').valueAsNumber, true);
+    dv.setUint16(4, document.querySelector('[data-name=_2]').valueAsNumber, true);
+    dv.setUint16(6, document.querySelector('[data-name=_3]').valueAsNumber, true);
+    dv.setUint16(8, document.querySelector('[data-name=_4]').valueAsNumber, true);
+    dv.setUint16(10, document.querySelector('[data-name=_5]').valueAsNumber, true);
+    dv.setUint16(12, document.querySelector('[data-name=_2]').valueAsNumber, true);
+    dv.setUint16(14, document.querySelector('[data-name=_3]').valueAsNumber, true);
     x.setAttribute('data-no-update', '');
     stripctl.binrq(function(newdata){
         let d= new DataView(newdata)
         noctl = true;
-        mj.applyJSON([d.getUint16(0,true), d.getUint16(2,true), 1-d.getUint16(4,true)]);
+        mj.applyJSON([1-d.getUint16(0,true), d.getUint16(2,true), d.getUint16(4,true), d.getUint16(6,true), d.getUint16(8,true), d.getUint16(10,true)]);
         noctl = false;
         x.removeAttribute('data-no-update');
     }, function(newdata){
@@ -34,7 +37,10 @@ function send(x) {
 }
 </script>
 <body onload='update_req()'>
-v:<input type='range' min=0 max=1024 data-name=_0 oninput='send(this)'><br>
-s:<input type='range' min=0 max=1024 data-name=_1 oninput='send(this)'><br>
-flicker:<input type='checkbox' data-name=_2 oninput='send(this)'>
+flicker:<input type='checkbox' data-name=_0 oninput='send(this)'><br>
+delay:<input type='range' min=1 max=100 data-name=_1 oninput='send(this)'><br>
+x0:<input type='range' min=0 max=149 data-name=_4 oninput='send(this)'><br>
+x1:<input type='range' min=0 max=150 data-name=_5 oninput='send(this)'><br>
+v:<input type='range' min=0 max=1024 data-name=_2 oninput='send(this)'><br>
+s:<input type='range' min=0 max=1024 data-name=_3 oninput='send(this)'><br>
 </body>

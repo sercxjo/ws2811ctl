@@ -16,9 +16,12 @@ CgiUploadFlashDef uploadParams={
 };
 
 struct BlockVars {
+    unsigned xgamma:16;
+    unsigned delay:16;
     unsigned v1:16;
     unsigned s1:16;
-    unsigned xgamma:16;
+    unsigned begin:16;
+    unsigned end:16;
     unsigned v:16;
     unsigned s:16;
 }__attribute__((__packed__));
@@ -41,8 +44,11 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
         {
           const BlockVars* input = reinterpret_cast<const BlockVars*>(connData->post->buff);
           Ws2811::xGammaLowBits = input->xgamma;
+          strip_drv_delay = input->delay;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v1 = input->v1;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s1 = input->s1;
+          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->begin = input->begin;
+          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->end = input->end;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->dv =
              std::abs(input->v1 - std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v + 7)/8;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->ds =
@@ -53,9 +59,11 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
         httpdStartResponse(connData, 200);
         httpdHeader(connData, "Access-Control-Allow-Origin", "*"); //< allow cross-domain requests
         httpdEndHeaders(connData);
-        BlockVars var = { std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v1,
+        BlockVars var = { Ws2811::xGammaLowBits, strip_drv_delay,
+                          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v1,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s1,
-                          Ws2811::xGammaLowBits,
+                          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->begin,
+                          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->end,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s, };
         httpdSend(connData, reinterpret_cast<const char*>(&var), sizeof var);
