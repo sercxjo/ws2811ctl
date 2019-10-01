@@ -90,6 +90,7 @@ struct PlazmaZone: Ws2811::Zone {
   unsigned ds:8;
   uint16_t h;
   char t;
+  static Ws2811::Color c0;
   virtual Ws2811::Color color(uint16_t x, Ws2811::Color backGround={0,0,0}) override;
   PlazmaZone(int _o, int _s): Ws2811::Zone(_o, _s), h0(15), v(0), v1(128), s(0), s1(900), dv(16), ds(112), t(2) {}
 };
