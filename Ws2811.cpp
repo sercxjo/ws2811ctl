@@ -56,6 +56,7 @@ void Ws2811::send_strip()
     taskEXIT_CRITICAL();
 }
 
+Ws2811::Color PlazmaZone::c0= {1023, 923, 800};
 Ws2811::Color PlazmaZone::color(uint16_t x, Ws2811::Color)
 {
   if (!x) {
@@ -75,7 +76,7 @@ Ws2811::Color PlazmaZone::color(uint16_t x, Ws2811::Color)
       t= 3;
     }
   }
-  Ws2811::Color c, c0= {1023, 923, 800};
+  Ws2811::Color c;
   static uint16_t H[]= {0, 11362, 31087u, 36708u, 44271u, 49893u};
   if (h < H[3])
     if (h < H[1]) { // carmine->orange

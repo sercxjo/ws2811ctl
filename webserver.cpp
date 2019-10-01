@@ -18,6 +18,7 @@ CgiUploadFlashDef uploadParams={
 struct BlockVars {
     unsigned xgamma:16;
     unsigned delay:16;
+    unsigned Wr:16, Wg:16, Wb:16;
     unsigned v1:16;
     unsigned s1:16;
     unsigned begin:16;
@@ -45,6 +46,9 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
           const BlockVars* input = reinterpret_cast<const BlockVars*>(connData->post->buff);
           Ws2811::xGammaLowBits = input->xgamma;
           strip_drv_delay = input->delay;
+          PlazmaZone::c0.r = input->Wr;
+          PlazmaZone::c0.g = input->Wg;
+          PlazmaZone::c0.b = input->Wb;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v1 = input->v1;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s1 = input->s1;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->begin = input->begin;
@@ -60,6 +64,7 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
         httpdHeader(connData, "Access-Control-Allow-Origin", "*"); //< allow cross-domain requests
         httpdEndHeaders(connData);
         BlockVars var = { Ws2811::xGammaLowBits, strip_drv_delay,
+                          PlazmaZone::c0.r, PlazmaZone::c0.g, PlazmaZone::c0.b,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v1,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s1,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->begin,
