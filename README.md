@@ -7,7 +7,7 @@
 
 ## Compile & Install
 * Clone esp-open-rtos and install all its prerequisites as described on https://github.com/SuperHouse/esp-open-rtos
-* Clone this repository into examlpes
+* Clone this repository into examlpes using option --recurse-submodules 
 * Create directory 'private' and file 'private/network-config.h' in the source tree of this project. The file must contain macro defines:
 ```c
 #define WIFI_SSID "youWifiSsid"
