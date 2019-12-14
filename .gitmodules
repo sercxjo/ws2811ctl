@@ -1,0 +1,3 @@
+[submodule "multirange"]
+	path = multirange
+	url = git@github.com:sercxjo/multirange.git
