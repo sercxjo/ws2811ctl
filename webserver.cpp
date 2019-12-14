@@ -62,6 +62,7 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
     case HTTPD_METHOD_GET:
         httpdStartResponse(connData, 200);
         httpdHeader(connData, "Access-Control-Allow-Origin", "*"); //< allow cross-domain requests
+        httpdHeader(connData, "Cache-Control","no-cache");
         httpdEndHeaders(connData);
         BlockVars var = { Ws2811::xGammaLowBits, strip_drv_delay,
                           PlazmaZone::c0.r, PlazmaZone::c0.g, PlazmaZone::c0.b,

@@ -1,0 +1,116 @@
+*{
+margin:0; padding:0;
+-webkit-margin-before: 0;
+-webkit-margin-after: 0;
+}
+html{
+font-size:2vw;
+}
+body{
+background: #122;
+color: #fab;
+--rh: 3rem;
+}
+table{
+border-spacing:0;
+float:left;
+background: #234;
+min-width:100vw;
+}
+
+@media (min-aspect-ratio: 2/1) {
+  html{
+   font-size:1vw;
+  }
+  table{
+    min-width:49.45vw;
+  }
+}
+
+@media (min-aspect-ratio: 5/3) and (max-aspect-ratio: 2/1) {
+  html{
+   font-size:1.98vw;
+  }
+  table{
+    min-width: 96vw;
+  }
+}
+
+tr:nth-child(2n){
+background: #04080c;
+}
+.k {
+}
+.z {
+background: #234;
+color: #fab
+}
+td {
+font-size: var(--rh);
+position:relative;
+vertical-align:middle;
+}
+td:nth-child(1) {
+width: calc(var(--rh)*3.3);
+text-align:center;
+}
+input[type=checkbox] {
+width: var(--rh);
+}
+input[type=checkbox], input[type=range], input[type=range].multirange {
+-webkit-appearance: none;
+height: var(--rh);
+border-radius: calc(var(--rh)*0.4);
+margin:calc(var(--rh)*0.53) calc(var(--rh)*0.16);
+background: #547;
+box-shadow: inset 0rem 0rem 0.3rem #fab, inset 0.1rem 0.1rem 0.2rem #000201 ;
+}
+input[type=range].multirange.ghost, input[type=range].multirange.middle {
+background: transparent;
+box-shadow: none ;
+}
+input:checked:after {
+    content: '\2714';
+    font-size: calc(var(--rh)*1.67);
+    position: absolute;
+    top: 0;
+    left: 0.1em;
+    color: #fab;
+}
+input[type=range], input[type=range].multirange {
+width: calc(50rem - var(--rh)*4);
+}
+input[type=range]::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: calc(var(--rh)*0.93);
+height: calc(var(--rh)*0.93);
+border-radius: calc(var(--rh)*0.4);
+background: #fab;
+}
+input[type=range]::-moz-range-thumb {
+-webkit-appearance: none;
+width: calc(var(--rh)*0.93);
+height: calc(var(--rh)*0.93);
+border: none;
+border-radius: calc(var(--rh)*0.4);
+background: #fab;
+}
+
+input[type="range"].multirange.ghost {
+background: var(--track-background);
+--track-background: linear-gradient(to right,
+transparent calc(var(--low) - 1%), var(--range-color) 0,
+var(--range-color) calc(var(--high) + 1%), transparent 0
+) no-repeat center center / calc(100% - var(--rh)*0.93) 93%;
+--range-color: #faba;
+}
+input[type="range"].multirange.ghost::-webkit-slider-runnable-track {
+background: var(--track-background);
+height: calc(var(--rh)*0.93);
+border-radius: calc(var(--rh)*0.4);
+}
+input[type="range"].multirange.ghost::-moz-range-track {
+background: var(--track-background);
+height: calc(var(--rh)*0.93);
+border-radius: calc(var(--rh)*0.4);
+}
