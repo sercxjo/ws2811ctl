@@ -84,7 +84,7 @@ mj.applyJSON= function (newdata, el, prefix, level) {
         if(newdata instanceof Array) mj.applyArray(newdata, el, prefix, level);
         else mj.applyObject(newdata, el, prefix, level);
     else {
-        switch(el.getAttribute("data-no-update")) {case "true": case "": return;}
+        if(el.hasAttribute("data-no-update")) return;
         switch(typeof el.getAttribute("data-format")) {
         case 'undefined': break;
         case 'string': newdata= el.getAttribute("data-format").sprintf(newdata); break;
@@ -96,7 +96,7 @@ mj.applyJSON= function (newdata, el, prefix, level) {
         }
     }
 };
-mj.prepareTag= function(src, els, el, attrname, prefix) { // разбор элемнтов для изменений
+mj.prepareTag= function(src, els, el, attrname, prefix) { // разбор элементов для изменений
     let attr=el.getAttribute(attrname), r;
     if(attr && attr.startsWith(prefix) && (r=attr.substr(prefix.length).match(/^(\d+)(-(\d*))?$/))) {
         if(r) {
@@ -120,6 +120,14 @@ mj.prepareTag= function(src, els, el, attrname, prefix) { // разбор эле
     return false;
 }
 mj.applyArray= function (newdata, p, prefix, level) {
+    if(newdata.length == 2 && p.getAttribute("multiple") !== null
+      && p.getAttribute("type") == "range" && p.valueLow != undefined) {
+        if(!p.hasAttribute("data-no-update")) {
+            p.valueLow = newdata[0];
+            p.valueHigh = newdata[1];
+        }
+        return;
+    }
     if(prefix==undefined) prefix="_";
     if(level==undefined) level=0;
     let els, src;
