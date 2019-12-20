@@ -23,6 +23,8 @@ struct BlockVars {
     unsigned s1:16;
     unsigned begin:16;
     unsigned end:16;
+    unsigned dhdx:16;
+    unsigned dhdt:16;
     unsigned v:16;
     unsigned s:16;
 }__attribute__((__packed__));
@@ -51,6 +53,8 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
           PlazmaZone::c0.b = input->Wb;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v1 = input->v1;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s1 = input->s1;
+          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->dhdx = input->dhdx;
+          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->dhdt = input->dhdt;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->begin = input->begin;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->end = input->end;
           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->dv =
@@ -70,6 +74,8 @@ int ICACHE_FLASH_ATTR cgiStripControl(HttpdConnData *connData) {
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s1,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->begin,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->end,
+                          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->dhdx,
+                          std::static_pointer_cast<PlazmaZone>(strip.zone[0])->dhdt,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->v,
                           std::static_pointer_cast<PlazmaZone>(strip.zone[0])->s, };
         httpdSend(connData, reinterpret_cast<const char*>(&var), sizeof var);

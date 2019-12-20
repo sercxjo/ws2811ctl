@@ -84,15 +84,18 @@ inline Ws2811::Color operator*(unsigned x, const Ws2811::Color&& y)
 
 struct PlazmaZone: Ws2811::Zone {
   uint16_t h0;
+  uint16_t h;
+  uint16_t dhdx;
+  uint16_t dhdt;
   unsigned v:11, v1:12;
   unsigned s:11, s1:12;
   unsigned dv:8;
   unsigned ds:8;
-  uint16_t h;
   char t;
   static Ws2811::Color c0;
   virtual Ws2811::Color color(uint16_t x, Ws2811::Color backGround={0,0,0}) override;
-  PlazmaZone(int _o, int _s): Ws2811::Zone(_o, _s), h0(15), v(0), v1(128), s(0), s1(900), dv(16), ds(112), t(2) {}
+  PlazmaZone(int _o, int _s): Ws2811::Zone(_o, _s), h0(15), h(15), dhdx(1311), dhdt(127),
+    v(0), v1(128), s(0), s1(900), dv(16), ds(112), t(2) {}
 };
 
 extern Ws2811 strip; //< strip be defined in application

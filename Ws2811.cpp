@@ -72,7 +72,7 @@ Ws2811::Color PlazmaZone::color(uint16_t x, Ws2811::Color)
     else if (s > s1) s--;
 
     if (!--t) {
-      h0+= 127;
+      h0+= dhdt;
       t= 3;
     }
   }
@@ -106,7 +106,7 @@ Ws2811::Color PlazmaZone::color(uint16_t x, Ws2811::Color)
       c.b= 1023 + 511 - c.r;
     }
   c = (c0*(1024-s) + c*s)/1024 * v  /  1024;
-  if (c.r<1024 && c.g<1024 && c.b<1024) h+= 1311;
+  if (c.r<1024 && c.g<1024 && c.b<1024) h+= dhdx;
   else h-= 32700;
   return c;
 }

@@ -10,7 +10,8 @@ function fill(newdata){
     let d= new DataView(newdata)
     noctl = true;
     mj.applyJSON([1-d.getUint16(0,true), d.getUint16(2,true), d.getUint16(4,true), d.getUint16(6,true),
-        d.getUint16(8,true), d.getUint16(10,true), d.getUint16(12,true), [d.getUint16(14,true), d.getUint16(16,true)]]);
+        d.getUint16(8,true), d.getUint16(10,true), d.getUint16(12,true), [d.getUint16(14,true), d.getUint16(16,true)],
+        d.getUint16(18,true), d.getUint16(20,true)]);
     noctl = false;
 }
 function update_req() {
@@ -24,7 +25,7 @@ function no_update(x, d) {
 }
 function send(x) {
     if(noctl || stripctl.queue.length>3) return;
-    let buf= new ArrayBuffer(22);
+    let buf= new ArrayBuffer(26);
     let dv= new DataView(buf);
     dv.setUint16(0, document.querySelector('[data-name=_0]').checked? 0:1, true);
     dv.setUint16(2, document.querySelector('[data-name=_1]').valueAsNumber, true);
@@ -36,8 +37,10 @@ function send(x) {
     let p = document.querySelector('[data-name=_7]');
     dv.setUint16(14, p.valueLow, true);
     dv.setUint16(16, p.valueHigh, true);
-    dv.setUint16(18, document.querySelector('[data-name=_5]').valueAsNumber, true);
-    dv.setUint16(20, document.querySelector('[data-name=_6]').valueAsNumber, true);
+    dv.setUint16(18, document.querySelector('[data-name=_8]').valueAsNumber, true);
+    dv.setUint16(20, document.querySelector('[data-name=_9]').valueAsNumber, true);
+    dv.setUint16(22, document.querySelector('[data-name=_5]').valueAsNumber, true);
+    dv.setUint16(24, document.querySelector('[data-name=_6]').valueAsNumber, true);
     while (x.getAttribute("multiple") !== null && x.getAttribute("type") == "range" && !x.classList.contains("original")) x = x.previousElementSibling;
     no_update(x,1);
     stripctl.binrq(function(newdata){
@@ -53,6 +56,8 @@ function send(x) {
 <table class=z><tr><td>☀<td><input type='range' min=0 max=1024 data-name=_5 oninput='send(this)'
 ><tr><td>🌈<td><input type='range' min=0 max=1024 data-name=_6 oninput='send(this)'
 ><tr><td>[⟷)<td><input type='range' multiple data-drag-middle min=0 max=149 data-name=_7 oninput='send(this)'
+><tr><td>∂h/∂x<td><input type='range' min=0 max=65535 data-name=_8 oninput='send(this)'
+><tr><td>∂h/∂t<td><input type='range' min=0 max=65535 data-name=_9 oninput='send(this)'
 ></table><table class=k>
 <tr><td>Wr<td><input type='range' min=0 max=1023 data-name=_2 oninput='send(this)'>
 <tr><td>Wg<td><input type='range' min=0 max=1023 data-name=_3 oninput='send(this)'>
